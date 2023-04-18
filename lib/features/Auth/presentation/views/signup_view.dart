@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:social_app/core/app_manager/colors/colors_manager.dart';
 import 'package:social_app/core/common_widgets/custom_toast_widget.dart';
 import 'package:social_app/features/Auth/presentation/view_model/Cubits/auth/auth_cubit.dart';
 import 'package:social_app/features/Auth/presentation/views/login_view.dart';
+import 'package:social_app/features/Home/presentation/views/home_layout.dart';
 
 import '../../../../core/app_manager/font/fonts_manager.dart';
-import '../../../../core/common_widgets/custom_logo_widget.dart';
 import '../../../../core/navigation_manager.dart';
-import 'widgets/custom_button_widget.dart';
 import 'widgets/custom_greeting_widget.dart';
 import 'widgets/custom_question_widget.dart';
 import 'widgets/custom_textFormField_widget.dart';
@@ -21,6 +19,7 @@ class SignUpView extends StatelessWidget {
   TextEditingController fNamecontroller = TextEditingController();
   TextEditingController lNamecontroller = TextEditingController();
   TextEditingController emailcontroller = TextEditingController();
+  TextEditingController phonecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -44,6 +43,11 @@ class SignUpView extends StatelessWidget {
               } else if (state is RegisterSuccessState) {
                 CustomToastWidget.showSuccessToast(text: 'Welcome 😊');
               }
+
+              if (state is UserDataCreatedSuccessState) {
+                Navigation.navigateWithNoReturnFromLRightToLeft(
+                    screen: const HomeLayoutView(), context: context);
+              }
             },
             builder: (context, state) {
               AuthCubit cubit = BlocProvider.of<AuthCubit>(context);
@@ -54,7 +58,7 @@ class SignUpView extends StatelessWidget {
                     key: _formKey,
                     child: Column(
                       children: [
-                        const CustomLogoWidget(),
+                        // const CustomLogoWidget(),
                         Padding(
                           padding: EdgeInsets.only(top: 25.h),
                           child: const CustomGreetingWidget(
@@ -138,12 +142,36 @@ class SignUpView extends StatelessWidget {
                         ),
                         CustomTextFormFieldWidget(
                           inputaction: TextInputAction.done,
+                          isPassword: false,
+                          keyboardtype: TextInputType.number,
+                          title: 'Phone Number',
+                          hinttext: 'enter your phone number',
+                          icon: Icons.phone_android,
+                          controller: phonecontroller,
+                          onsave: (value) {
+                            phonecontroller.text = value!;
+                          },
+                          onvalidate: (value) {
+                            if (value!.isEmpty || value.length < 3) {
+                              return 'enter a valid phone number';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        CustomTextFormFieldWidget(
+                          inputaction: TextInputAction.done,
                           isPassword: cubit.isHidden ? true : false,
                           keyboardtype: TextInputType.visiblePassword,
                           title: 'Password',
                           hinttext: 'enter at least 8 characters',
                           icon: Icons.lock,
                           suffixicon: TextButton(
+                            style: const ButtonStyle(
+                                overlayColor:
+                                    MaterialStatePropertyAll(Colors.white)),
                             onPressed: () {
                               cubit.changeVisibility();
                             },
@@ -173,6 +201,7 @@ class SignUpView extends StatelessWidget {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
                                 cubit.userRegister(
+                                    phone: phonecontroller.text,
                                     firstname: fNamecontroller.text,
                                     lastname: lNamecontroller.text,
                                     email: emailcontroller.text,

@@ -27,5 +27,13 @@ class LoginFailureState extends AuthState {
   });
 }
 
+class UserDataCreatedSuccessState extends AuthState {}
 
-class VisibilityChange extends AuthState{}
+class UserDataCreatedFailureState extends AuthState {
+  final String errMessage;
+  UserDataCreatedFailureState({
+    required this.errMessage,
+  });
+}
+
+class VisibilityChange extends AuthState {}

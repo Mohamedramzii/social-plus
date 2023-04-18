@@ -86,6 +86,9 @@ class LoginView extends StatelessWidget {
                           hinttext: 'enter at least 8 characters',
                           icon: Icons.lock,
                           suffixicon: TextButton(
+                            style: const ButtonStyle(
+                                overlayColor:
+                                    MaterialStatePropertyAll(Colors.white)),
                             onPressed: () {
                               cubit.changeVisibility();
                             },

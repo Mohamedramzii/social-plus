@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/core/collection_endpoint.dart';
+import 'package:social_app/features/Auth/data/models/userModel.dart';
 
 part 'auth_state.dart';
 
@@ -13,13 +15,22 @@ class AuthCubit extends Cubit<AuthState> {
     required String firstname,
     required String lastname,
     required String email,
+    required String phone,
     required String password,
   }) async {
     emit(RegisterLoadingState());
 
     try {
-      UserCredential user = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      await _auth
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((value) {
+        createUserData(
+            firstname: firstname,
+            lastname: lastname,
+            email: email,
+            phone: phone,
+            uID: value.user!.uid);
+      });
       emit(RegisterSuccessState());
     } on FirebaseAuthException catch (e) {
       String message = '';
@@ -51,10 +62,34 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  bool isHidden =true;
+  bool isHidden = true;
 
   changeVisibility() {
     isHidden = !isHidden;
     emit(VisibilityChange());
+  }
+
+  createUserData({
+    required String firstname,
+    required String lastname,
+    required String email,
+    required String phone,
+    required String uID,
+  }) {
+    UserModel model = UserModel(
+        uID: uID,
+        firstname: firstname,
+        lastname: lastname,
+        email: email,
+        phone: phone);
+    CollectionEndpoints.usersCollection
+        .doc(uID)
+        .set(model.toJson())
+        .then((value) {
+      emit(UserDataCreatedSuccessState());
+    }).catchError((e) {
+      debugPrint('User Create Error : ${e.toString()}');
+      emit(UserDataCreatedFailureState(errMessage: e.toString()));
+    });
   }
 }
