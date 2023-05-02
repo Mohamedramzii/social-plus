@@ -9,6 +9,7 @@ abstract class FontManager {
           fontSize: 45.sp,
           fontWeight: FontWeight.w900,
           color: ColorsManager.primaryColor));
+
   static TextStyle textStyle20 = GoogleFonts.sourceCodePro(
       textStyle: TextStyle(
     fontSize: 20.sp,
@@ -23,6 +24,14 @@ abstract class FontManager {
   static TextStyle textStyle14bk = GoogleFonts.abel(
       textStyle: TextStyle(
           fontSize: 16.sp, color: Colors.black, fontWeight: FontWeight.w900));
+
+  static TextStyle textStyle20bk = GoogleFonts.abel(
+      textStyle: TextStyle(
+          fontSize: 20.sp, color: Colors.black, fontWeight: FontWeight.w900));
+  static TextStyle textStyle20p = GoogleFonts.abel(
+      textStyle: TextStyle(
+          fontSize: 20.sp, color: ColorsManager.primaryColor, fontWeight: FontWeight.w900));
+
   static TextStyle textStyle14gry = GoogleFonts.abel(
       textStyle: TextStyle(
     fontSize: 12.sp,

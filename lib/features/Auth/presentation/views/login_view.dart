@@ -13,6 +13,7 @@ import 'package:social_app/features/Auth/presentation/views/signup_view.dart';
 import 'package:social_app/features/Auth/presentation/views/widgets/custom_button_widget.dart';
 import 'package:social_app/core/common_widgets/custom_logo_widget.dart';
 import 'package:social_app/features/Home/presentation/views/home_layout.dart';
+import '../../../../core/common_widgets/custom_loading_widget.dart';
 import '../../../../core/constants.dart';
 import '../../../../core/navigation_manager.dart';
 import 'widgets/custom_greeting_widget.dart';
@@ -41,7 +42,7 @@ class LoginView extends StatelessWidget {
                 CustomToastWidget.showSuccessToast(
                     text: 'Logged-in Successfully');
                 Navigation.navigateWithNoReturnFromLRightToLeft(
-                    screen:  HomeLayoutView(), context: context);
+                    screen: HomeLayoutView(), context: context);
               }
             },
             builder: (context, state) {
@@ -147,11 +148,7 @@ class LoginView extends StatelessWidget {
                             ),
                           ),
                           fallbackBuilder: (context) {
-                            return Center(
-                              child: CircularProgressIndicator(
-                                color: ColorsManager.primaryColor,
-                              ),
-                            );
+                            return const Center(child: CustomLoadingWidget());
                           },
                         ),
                         SizedBox(

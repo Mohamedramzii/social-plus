@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/core/app_manager/assets/images_manager.dart';
 import 'package:social_app/core/collection_endpoint.dart';
 import 'package:social_app/features/Auth/data/models/userModel.dart';
 
@@ -79,12 +80,18 @@ class AuthCubit extends Cubit<AuthState> {
     required String uID,
   }) {
     UserModel model = UserModel(
-        uID: uID,
-        firstname: firstname,
-        lastname: lastname,
-        email: email,
-        phone: phone,
-        isEmailVerified: false);
+      uID: uID,
+      firstname: firstname,
+      lastname: lastname,
+      email: email,
+      phone: phone,
+      bio: 'Write your bio ...',
+      image:
+          'https://img.freepik.com/free-photo/smiling-doctor-with-strethoscope-isolated-grey_651396-974.jpg?size=626&ext=jpg',
+      cover:
+          'https://img.freepik.com/free-photo/galaxy-nature-aesthetic-background-starry-sky-mountain-remixed-media_53876-126761.jpg?w=996&t=st=1683061690~exp=1683062290~hmac=7e3bf6c60535f057515b91ccb57479d91753853ab94137781091e6e836ac0d8f',
+      isEmailVerified: false,
+    );
     CollectionEndpoints.usersCollection
         .doc(uID)
         .set(model.toJson())
@@ -108,6 +115,4 @@ class AuthCubit extends Cubit<AuthState> {
       emit(GetUserDataFailureState(errMessage: e.toString()));
     });
   }
-
-
 }

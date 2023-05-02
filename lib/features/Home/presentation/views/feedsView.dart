@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_scrolling_fab_animated/flutter_scrolling_fab_animated.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:social_app/core/app_manager/colors/colors_manager.dart';
+import 'package:social_app/features/Home/presentation/views/addpostview.dart';
+import '../../../../core/navigation_manager.dart';
 import 'widgets/feeds_widget/CUSTOM_POST_WIDGET.dart';
 
 class FeedsView extends StatelessWidget {
@@ -21,7 +23,7 @@ class FeedsView extends StatelessWidget {
         ),
         floatingActionButton: ScrollingFabAnimated(
           icon: const Icon(
-            Icons.add,
+            FontAwesomeIcons.plus,
             color: Colors.white,
           ),
           text: const Text(
@@ -29,10 +31,13 @@ class FeedsView extends StatelessWidget {
             style: TextStyle(color: Colors.white, fontSize: 16.0),
           ),
           color: ColorsManager.primaryColor,
-          width: 133.w,
+          width: 135.w,
           // radius: 60,
           // limitIndicator: 40,
-          onPress: () {},
+          onPress: () {
+            Navigation.navigateWithReturnFromRightToLeft(
+                screen: const AddPostView(), context: context);
+          },
           scrollController: _scrollController,
           animateIcon: true,
           inverted: false,

@@ -7,6 +7,7 @@ abstract class Theme_Data {
   static ThemeData lightTheme = ThemeData(
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: ColorsManager.primaryColor),
         elevation: 0,
         systemOverlayStyle:
             SystemUiOverlayStyle(statusBarColor: ColorsManager.primaryColor),
@@ -20,9 +21,7 @@ abstract class Theme_Data {
       scaffoldBackgroundColor: Colors.white);
 
   static ThemeData darkTheme = ThemeData(
-    cardTheme: CardTheme(
-      color: Colors.grey.shade400 
-    ),
+      cardTheme: CardTheme(color: Colors.grey.shade400),
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.black45,
         elevation: 0,
