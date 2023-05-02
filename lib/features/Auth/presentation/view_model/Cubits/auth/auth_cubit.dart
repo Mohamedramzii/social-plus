@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/core/collection_endpoint.dart';
 import 'package:social_app/features/Auth/data/models/userModel.dart';
 
+import '../../../../../../core/constants.dart';
+
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -11,7 +13,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<void> userRegister({
+  Future<void> registerUser({
     required String firstname,
     required String lastname,
     required String email,
@@ -31,7 +33,7 @@ class AuthCubit extends Cubit<AuthState> {
             phone: phone,
             uID: value.user!.uid);
       });
-      emit(RegisterSuccessState());
+      // emit(RegisterSuccessState());
     } on FirebaseAuthException catch (e) {
       String message = '';
 
@@ -44,7 +46,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  userLogin({
+  loginUser({
     required String email,
     required String password,
   }) {
@@ -55,7 +57,7 @@ class AuthCubit extends Cubit<AuthState> {
         .then((value) {
       debugPrint(value.user!.email);
       debugPrint(value.user!.uid);
-      emit(LoginSuccessState());
+      emit(LoginSuccessState(uID: value.user!.uid));
     }).catchError((e) {
       debugPrint(e.message);
       emit(LoginFailureState(errMessage: e.message));
@@ -81,15 +83,31 @@ class AuthCubit extends Cubit<AuthState> {
         firstname: firstname,
         lastname: lastname,
         email: email,
-        phone: phone);
+        phone: phone,
+        isEmailVerified: false);
     CollectionEndpoints.usersCollection
         .doc(uID)
         .set(model.toJson())
         .then((value) {
-      emit(UserDataCreatedSuccessState());
+      emit(UserDataCreatedSuccessState(uID: uID));
     }).catchError((e) {
       debugPrint('User Create Error : ${e.toString()}');
       emit(UserDataCreatedFailureState(errMessage: e.toString()));
     });
   }
+
+  UserModel? userModel;
+  getUserData() {
+    emit(GetUserDataLoadingState());
+    CollectionEndpoints.usersCollection.doc(uID).get().then((value) {
+      debugPrint('User Data: ${value.data()}');
+      userModel = UserModel.fromJson(value.data()!);
+      emit(GetUserDataSuccessState(userModel: userModel!));
+    }).catchError((e) {
+      debugPrint('User Data Error: $e');
+      emit(GetUserDataFailureState(errMessage: e.toString()));
+    });
+  }
+
+
 }

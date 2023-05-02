@@ -20,4 +20,17 @@ abstract class FontManager {
     fontSize: 14.sp,
     color: ColorsManager.primaryColor,
   ));
+  static TextStyle textStyle14bk = GoogleFonts.abel(
+      textStyle: TextStyle(
+          fontSize: 16.sp, color: Colors.black, fontWeight: FontWeight.w900));
+  static TextStyle textStyle14gry = GoogleFonts.abel(
+      textStyle: TextStyle(
+    fontSize: 12.sp,
+    color: Colors.grey,
+  ));
+  static TextStyle textStylepostBody = GoogleFonts.montserrat(
+      textStyle: TextStyle(
+    fontSize: 14.sp,
+    // color: Colors.grey,
+  ));
 }

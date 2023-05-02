@@ -7,10 +7,13 @@ import 'package:page_transition/page_transition.dart';
 import 'package:social_app/core/app_manager/colors/colors_manager.dart';
 import 'package:social_app/core/app_manager/font/fonts_manager.dart';
 import 'package:social_app/core/common_widgets/custom_toast_widget.dart';
+import 'package:social_app/core/helpers/cache_helper.dart';
 import 'package:social_app/features/Auth/presentation/view_model/Cubits/auth/auth_cubit.dart';
 import 'package:social_app/features/Auth/presentation/views/signup_view.dart';
 import 'package:social_app/features/Auth/presentation/views/widgets/custom_button_widget.dart';
 import 'package:social_app/core/common_widgets/custom_logo_widget.dart';
+import 'package:social_app/features/Home/presentation/views/home_layout.dart';
+import '../../../../core/constants.dart';
 import '../../../../core/navigation_manager.dart';
 import 'widgets/custom_greeting_widget.dart';
 import 'widgets/custom_question_widget.dart';
@@ -33,8 +36,12 @@ class LoginView extends StatelessWidget {
               if (state is LoginFailureState) {
                 CustomToastWidget.showFailureToast(text: state.errMessage);
               } else if (state is LoginSuccessState) {
+                uID = CacheHelper.saveData(key: 'uID', value: state.uID);
+
                 CustomToastWidget.showSuccessToast(
                     text: 'Logged-in Successfully');
+                Navigation.navigateWithNoReturnFromLRightToLeft(
+                    screen:  HomeLayoutView(), context: context);
               }
             },
             builder: (context, state) {
@@ -122,7 +129,7 @@ class LoginView extends StatelessWidget {
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
-                                cubit.userLogin(
+                                cubit.loginUser(
                                     email: emailcontroller.text,
                                     password: passwordcontroller.text);
                               }

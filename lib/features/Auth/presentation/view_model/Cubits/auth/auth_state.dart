@@ -18,7 +18,12 @@ class RegisterFailureState extends AuthState {
 
 class LoginLoadingState extends AuthState {}
 
-class LoginSuccessState extends AuthState {}
+class LoginSuccessState extends AuthState {
+  final String uID;
+  LoginSuccessState({
+    required this.uID,
+  });
+}
 
 class LoginFailureState extends AuthState {
   final String errMessage;
@@ -27,7 +32,12 @@ class LoginFailureState extends AuthState {
   });
 }
 
-class UserDataCreatedSuccessState extends AuthState {}
+class UserDataCreatedSuccessState extends AuthState {
+  final String uID;
+  UserDataCreatedSuccessState({
+    required this.uID,
+  });
+}
 
 class UserDataCreatedFailureState extends AuthState {
   final String errMessage;
@@ -37,3 +47,20 @@ class UserDataCreatedFailureState extends AuthState {
 }
 
 class VisibilityChange extends AuthState {}
+
+
+class GetUserDataSuccessState extends AuthState {
+  final UserModel userModel;
+  GetUserDataSuccessState({
+    required this.userModel,
+  });
+}
+
+class GetUserDataLoadingState extends AuthState {}
+
+class GetUserDataFailureState extends AuthState {
+  final String errMessage;
+  GetUserDataFailureState({
+    required this.errMessage,
+  });
+}

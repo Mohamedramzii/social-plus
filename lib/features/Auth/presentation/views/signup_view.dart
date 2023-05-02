@@ -4,6 +4,7 @@ import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:social_app/core/app_manager/colors/colors_manager.dart';
 import 'package:social_app/core/common_widgets/custom_toast_widget.dart';
+import 'package:social_app/core/helpers/cache_helper.dart';
 import 'package:social_app/features/Auth/presentation/view_model/Cubits/auth/auth_cubit.dart';
 import 'package:social_app/features/Auth/presentation/views/login_view.dart';
 import 'package:social_app/features/Home/presentation/views/home_layout.dart';
@@ -40,13 +41,18 @@ class SignUpView extends StatelessWidget {
             listener: (context, state) {
               if (state is RegisterFailureState) {
                 CustomToastWidget.showFailureToast(text: state.errMessage);
-              } else if (state is RegisterSuccessState) {
-                CustomToastWidget.showSuccessToast(text: 'Welcome 😊');
               }
+              // else if (state is RegisterSuccessState) {
+              //   CustomToastWidget.showSuccessToast(text: 'Welcome 😊');
+              // }
 
               if (state is UserDataCreatedSuccessState) {
-                Navigation.navigateWithNoReturnFromLRightToLeft(
-                    screen: const HomeLayoutView(), context: context);
+                CacheHelper.saveData(key: 'uID', value: state.uID)
+                    .then((value) {
+                  CustomToastWidget.showSuccessToast(text: 'Welcome 😊');
+                  Navigation.navigateWithNoReturnFromLRightToLeft(
+                      screen:  HomeLayoutView(), context: context);
+                });
               }
             },
             builder: (context, state) {
@@ -141,7 +147,7 @@ class SignUpView extends StatelessWidget {
                           height: 20.h,
                         ),
                         CustomTextFormFieldWidget(
-                          inputaction: TextInputAction.done,
+                          inputaction: TextInputAction.next,
                           isPassword: false,
                           keyboardtype: TextInputType.number,
                           title: 'Phone Number',
@@ -200,7 +206,7 @@ class SignUpView extends StatelessWidget {
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
-                                cubit.userRegister(
+                                cubit.registerUser(
                                     phone: phonecontroller.text,
                                     firstname: fNamecontroller.text,
                                     lastname: lNamecontroller.text,
