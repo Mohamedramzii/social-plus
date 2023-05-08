@@ -48,14 +48,15 @@ class HomeCubit extends Cubit<HomeState> {
   String? profileImageURL;
   uploadProfileImage(
     context, {
-    required String firstname,
-    required String lastname,
-    required String bio,
-    required String email,
-    required String phone,
+    String? firstname,
+    String? lastname,
+    String? bio,
+    String? email,
+    String? phone,
   }) {
     emit(UploadingProfileImageLoadingState());
     var user = BlocProvider.of<AuthCubit>(context).userModel!;
+    var authCubit = BlocProvider.of<AuthCubit>(context);
     firebase_storage.FirebaseStorage.instance
         .ref()
         .child(
@@ -64,16 +65,20 @@ class HomeCubit extends Cubit<HomeState> {
         .putFile(profileImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
-        updateUserData(context,
-            firstname: firstname,
-            lastname: lastname,
-            bio: bio,
-            email: email,
-            phone: phone,
-            image: value);
+        CollectionEndpoints.usersCollection
+            .doc(user.uID)
+            .update({'image': value});
+        print('DONEEEEEEEEEEEEEEEEEEE');
+        // updateUserData(context,
+        //     firstname: firstname,
+        //     lastname: lastname,
+        //     bio: bio,
+        //     email: email,
+        //     phone: phone,
+        //     image: value);
+        authCubit.getUserData();
         print('downloadLink: $value');
         emit(UploadingProfileImageSuccessState());
-        
       }).catchError((e) {
         emit(UploadingProfileImageErrorState(errMessage: e.toString()));
       });
@@ -85,14 +90,15 @@ class HomeCubit extends Cubit<HomeState> {
   String? coverImageURL;
   uploadCoverImage(
     context, {
-    required String firstname,
-    required String lastname,
-    required String bio,
-    required String email,
-    required String phone,
+    String? firstname,
+    String? lastname,
+    String? bio,
+    String? email,
+    String? phone,
   }) {
     emit(UploadingCoverImageLoadingState());
     var user = BlocProvider.of<AuthCubit>(context).userModel!;
+    var authCubit = BlocProvider.of<AuthCubit>(context);
     firebase_storage.FirebaseStorage.instance
         .ref()
         .child(
@@ -100,13 +106,18 @@ class HomeCubit extends Cubit<HomeState> {
         .putFile(CoverImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
-        updateUserData(context,
-            firstname: firstname,
-            lastname: lastname,
-            bio: bio,
-            email: email,
-            phone: phone,
-            cover: value);
+        CollectionEndpoints.usersCollection
+            .doc(user.uID)
+            .update({'cover': value});
+        authCubit.getUserData();
+
+        // updateUserData(context,
+        //     firstname: firstname,
+        //     lastname: lastname,
+        //     bio: bio,
+        //     email: email,
+        //     phone: phone,
+        //     cover: value);
         emit(UploadingCoverImageSuccessState());
       }).catchError((e) {
         emit(UploadingCoverImageErrorState(errMessage: e.toString()));
@@ -117,13 +128,14 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   updateUserData(context,
-      {String? firstname,
-      String? lastname,
-      String? bio,
-      String? email,
-      String? phone,
-      String? cover,
-      String? image}) {
+      {
+      required String? firstname,
+      required String? lastname,
+      required String? bio,
+      required String? email,
+      required String? phone,
+       String? cover,
+       String? image}) {
     emit(UpdateUserDataLoadingState());
     var user = BlocProvider.of<AuthCubit>(context).userModel!;
     var authCubit = BlocProvider.of<AuthCubit>(context);
