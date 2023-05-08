@@ -10,10 +10,11 @@ import 'package:social_app/core/app_manager/theme/theme_manager.dart';
 import 'package:social_app/core/helpers/cache_helper.dart';
 import 'package:social_app/features/Auth/presentation/view_model/Cubits/auth/auth_cubit.dart';
 import 'package:social_app/features/Auth/presentation/views/login_view.dart';
-import 'package:social_app/features/Home/presentation/view_model/cubits/cubit/home_cubit.dart';
+
 import 'package:social_app/features/Home/presentation/views/home_layout.dart';
 
 import 'core/constants.dart';
+import 'features/Home/presentation/view_model/cubits/cubit/home_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +32,7 @@ void main() async {
   runApp(MyApp(
     widget: widget,
   ));
+
 }
 
 class MyApp extends StatelessWidget {

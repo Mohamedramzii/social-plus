@@ -51,6 +51,8 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   flutter_scrolling_fab_animated: ^0.1.4
   loading_animation_widget: ^1.2.0+4
+  image_picker: ^0.8.7+4
+  firebase_storage: ^11.1.2
  
   
 

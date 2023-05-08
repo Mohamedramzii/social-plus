@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_app/core/app_manager/assets/images_manager.dart';
 import 'package:social_app/core/collection_endpoint.dart';
 import 'package:social_app/features/Auth/data/models/userModel.dart';
 
@@ -114,5 +113,11 @@ class AuthCubit extends Cubit<AuthState> {
       debugPrint('User Data Error: $e');
       emit(GetUserDataFailureState(errMessage: e.toString()));
     });
+  }
+
+  addPhotos() {
+    CollectionEndpoints.usersCollection
+        .doc(_auth.currentUser!.uid)
+        .set({'image': 'sdasd'});
   }
 }

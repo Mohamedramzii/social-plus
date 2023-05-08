@@ -3,9 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_scrolling_fab_animated/flutter_scrolling_fab_animated.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:social_app/core/app_manager/colors/colors_manager.dart';
+import 'package:social_app/core/helpers/cache_helper.dart';
 import 'package:social_app/features/Home/presentation/views/addpostview.dart';
 import '../../../../core/navigation_manager.dart';
-import 'widgets/feeds_widget/CUSTOM_POST_WIDGET.dart';
+import 'widgets/feeds_widgets/CUSTOM_POST_WIDGET.dart';
 
 class FeedsView extends StatelessWidget {
   FeedsView({super.key});
@@ -35,6 +36,7 @@ class FeedsView extends StatelessWidget {
           // radius: 60,
           // limitIndicator: 40,
           onPress: () {
+            // CacheHelper.clearData(key: 'uID');
             Navigation.navigateWithReturnFromRightToLeft(
                 screen: const AddPostView(), context: context);
           },

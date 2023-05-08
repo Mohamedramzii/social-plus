@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:social_app/core/app_manager/assets/images_manager.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:social_app/core/app_manager/colors/colors_manager.dart';
 import 'package:social_app/core/app_manager/font/fonts_manager.dart';
 import 'package:social_app/core/common_widgets/custom_loading_widget.dart';
 import 'package:social_app/features/Auth/presentation/view_model/Cubits/auth/auth_cubit.dart';
+import 'package:social_app/features/Home/presentation/view_model/cubits/cubit/home_cubit.dart';
+import 'package:social_app/features/Home/presentation/views/editProfile_view.dart';
+import 'package:social_app/features/Home/presentation/views/widgets/settings_widgets/bio_widget.dart';
+import 'package:social_app/features/Home/presentation/views/widgets/settings_widgets/profile_image_widget.dart';
+import 'package:social_app/features/Home/presentation/views/widgets/settings_widgets/username_widget.dart';
+
+import '../../../../core/constants.dart';
+import '../../../../core/navigation_manager.dart';
+import 'widgets/settings_widgets/cover_profile_images_widget.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -14,7 +23,7 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Settings',
+          title: Text('Profile',
               style: FontManager.textStyle20
                   .copyWith(color: ColorsManager.primaryColor)),
         ),
@@ -22,6 +31,7 @@ class SettingsView extends StatelessWidget {
           listener: (context, state) {},
           builder: (context, state) {
             var cubit = BlocProvider.of<AuthCubit>(context);
+            var homecubit = BlocProvider.of<HomeCubit>(context);
             if (state is GetUserDataSuccessState) {
               return Column(
                 children: [
@@ -31,51 +41,67 @@ class SettingsView extends StatelessWidget {
                       alignment: Alignment.bottomCenter,
                       clipBehavior: Clip.none,
                       children: [
-                        ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(15),
-                              topLeft: Radius.circular(15)),
-                          child: SizedBox(
-                            height: 160.h,
-                            width: double.infinity,
-                            child: Image.network(
-                              cubit.userModel!.cover!,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                        CoverImageWidget(
+                            isOut: false,
+                            cover: cubit.userModel!.cover!,
+                            isInEdit: false,
+                            coverImage: homecubit.CoverImage),
+                        ProfileImageWidget(
+                          image: cubit.userModel!.image!,
+                          isInEdit: false,
+                          profileImage: homecubit.profileImage,
                         ),
-                        Positioned(
-                          left: 100.w,
-                          bottom: -50,
-                          child: CircleAvatar(
-                            radius: 75,
-                            backgroundColor: Colors.white,
-                            child: CircleAvatar(
-                                radius: 70,
-                                //! i added a null check just for test as i did not add an image in firebase firestore
-                                backgroundImage: cubit.userModel!.image!.isEmpty
-                                    ? const NetworkImage(
-                                        'https://img.freepik.com/free-photo/smiling-doctor-with-strethoscope-isolated-grey_651396-974.jpg?size=626&ext=jpg',
-                                      )
-                                    : NetworkImage(cubit.userModel!.image!)),
-                          ),
-                        )
                       ],
                     ),
                   ),
                   SizedBox(
                     height: 40.h,
                   ),
-                  Text(
-                    '${cubit.userModel!.firstname} ${cubit.userModel!.lastname}',
-                    style: FontManager.textStyle20bk,
+                  UserNameWidget(
+                    cubit: cubit,
+                    isInEdit: false,
                   ),
                   SizedBox(
                     height: 5.h,
                   ),
-                  Text(
-                    cubit.userModel!.bio!,
-                    style: FontManager.textStyle14gry,
+                  BioWidget(
+                    cubit: cubit,
+                    isInEdit: false,
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.solidEnvelope,
+                          size: 15,
+                          color: ColorsManager.primaryColor,
+                        ),
+                        SizedBox(
+                          width: 7.w,
+                        ),
+                        Text(cubit.userModel!.email!),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.phoneVolume,
+                          size: 15,
+                          color: ColorsManager.primaryColor,
+                        ),
+                        SizedBox(
+                          width: 7.w,
+                        ),
+                        Text(cubit.userModel!.phone!),
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 30.h,
@@ -152,23 +178,58 @@ class SettingsView extends StatelessWidget {
                       ),
                     ],
                   ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 30.h, horizontal: 8.w),
-                    child: MaterialButton(
-                      minWidth: double.infinity,
-                      height: 40.h,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7)
-                      ),
-                      onPressed: () {},
-                      color: ColorsManager.primaryColor,
-                      child: Text(
-                        'EDIT PROFILE',
-                        style: FontManager.textStyle20bk.copyWith(color: Colors.white),
-                      ),
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {},
+                            child: Container(
+                              height: 35.h,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                  ),
+                                  borderRadius: BorderRadius.circular(7),
+                                  color: Colors.white),
+                              child: Text(
+                                'Your photos',
+                                style: FontManager.textStyle14bk,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            isExit=true;
+                            print(isExit);
+                            Navigation.navigateWithNoReturnFromLRightToLeft(
+                                screen: EditProfileView(), context: context);
+                          },
+                          child: Container(
+                            width: 60.w,
+                            height: 35.h,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey,
+                                ),
+                                borderRadius: BorderRadius.circular(7),
+                                color: Colors.white),
+                            child: const Icon(FontAwesomeIcons.penToSquare),
+                          ),
+                        ),
+                      ],
                     ),
-                  )
+                  ),
                 ],
               );
             } else {
