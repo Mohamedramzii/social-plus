@@ -32,7 +32,8 @@ class ProfileImageWidget extends StatelessWidget {
           child: CircleAvatar(
               radius: 70,
               //isExit indicates that we are exited from edit profle screen so cover image remains as it is 
-              backgroundImage: state == null || isExit == true
+              backgroundImage: state == null 
+              || isExit == true
                   ? NetworkImage(image)
                   : profileImage != null
                       ? FileImage(profileImage!) as ImageProvider

@@ -210,6 +210,7 @@ class SettingsView extends StatelessWidget {
                         InkWell(
                           onTap: () {
                             isExit=true;
+                            // isExitProfile=true;
                             print(isExit);
                             Navigation.navigateWithNoReturnFromLRightToLeft(
                                 screen: EditProfileView(), context: context);

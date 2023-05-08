@@ -9,7 +9,9 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:social_app/core/app_manager/colors/colors_manager.dart';
 import 'package:social_app/core/constants.dart';
+import 'package:social_app/features/Home/presentation/views/changeCoverImageView.dart';
 
+import '../../../../../../core/navigation_manager.dart';
 import '../../../view_model/cubits/cubit/home_cubit.dart';
 
 class CoverImageWidget extends StatelessWidget {
@@ -39,8 +41,8 @@ class CoverImageWidget extends StatelessWidget {
           child: SizedBox(
             height: 160.h,
             width: double.infinity,
-            //isExit indicates that we are exited from edit profle screen so cover image remains as it is 
-            child: state == null || isExit! ==true
+            //isExit indicates that we are exited from edit profle screen so cover image remains as it is
+            child: state == null || isExit! == true
                 ? Image.network(
                     cover,
                     fit: BoxFit.cover,
@@ -62,30 +64,32 @@ class CoverImageWidget extends StatelessWidget {
             bottom: -20,
             child: InkWell(
               onTap: () {
-                var cubit = BlocProvider.of<HomeCubit>(context);
-                AwesomeDialog(
-                  context: context,
-                  dialogType: DialogType.question,
-                  animType: AnimType.rightSlide,
-                  title: 'Pick An Image',
-                  desc: 'choose a way to pick your image.',
-                  btnOkOnPress: () {
-                    isExit=false;
-                    print(isExit);
-                    cubit.getCoverImage(ImageSource.gallery);
-                  },
-                  btnOkText: 'Gallery',
-                  btnOkIcon: FontAwesomeIcons.image,
-                  btnOkColor: Colors.black,
-                  btnCancelOnPress: () {
-                    isExit=false;
-                    print(isExit);
-                    cubit.getCoverImage(ImageSource.camera);
-                  },
-                  btnCancelText: 'Camera',
-                  btnCancelIcon: Icons.camera_alt_rounded,
-                  btnCancelColor: Colors.black,
-                ).show();
+                Navigation.navigateWithNoReturnFromLRightToLeft(
+                    screen: const ChangeCoverImageView(), context: context);
+                // var cubit = BlocProvider.of<HomeCubit>(context);
+                // AwesomeDialog(
+                //   context: context,
+                //   dialogType: DialogType.question,
+                //   animType: AnimType.rightSlide,
+                //   title: 'Pick An Image',
+                //   desc: 'choose a way to pick your image.',
+                //   btnOkOnPress: () {
+                //     isExit=false;
+                //     print(isExit);
+                //     cubit.getCoverImage(ImageSource.gallery);
+                //   },
+                //   btnOkText: 'Gallery',
+                //   btnOkIcon: FontAwesomeIcons.image,
+                //   btnOkColor: Colors.black,
+                //   btnCancelOnPress: () {
+                //     isExit=false;
+                //     print(isExit);
+                //     cubit.getCoverImage(ImageSource.camera);
+                //   },
+                //   btnCancelText: 'Camera',
+                //   btnCancelIcon: Icons.camera_alt_rounded,
+                //   btnCancelColor: Colors.black,
+                // ).show();
               },
               child: CircleAvatar(
                 backgroundColor: ColorsManager.primaryColor,
