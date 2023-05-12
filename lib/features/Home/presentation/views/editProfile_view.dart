@@ -1,11 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:awesome_dialog/awesome_dialog.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'package:social_app/core/common_widgets/custom_toast_widget.dart';
 import 'package:social_app/core/constants.dart';
 import 'package:social_app/features/Home/presentation/view_model/cubits/cubit/home_cubit.dart';
@@ -216,7 +215,7 @@ class EditProfileView extends StatelessWidget {
                     height: 40.h,
                     color: ColorsManager.primaryColor,
                     onPressed: () {
-                      isExit = true;
+                      // isExit = true;
                       // isExitProfile=true;
                       Navigation.navigateWithNoReturnFromLeftToRight(
                           screen: SettingsView(), context: context);

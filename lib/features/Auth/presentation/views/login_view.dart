@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:page_transition/page_transition.dart';
+
 import 'package:social_app/core/app_manager/colors/colors_manager.dart';
 import 'package:social_app/core/app_manager/font/fonts_manager.dart';
 import 'package:social_app/core/common_widgets/custom_toast_widget.dart';
 import 'package:social_app/core/helpers/cache_helper.dart';
 import 'package:social_app/features/Auth/presentation/view_model/Cubits/auth/auth_cubit.dart';
 import 'package:social_app/features/Auth/presentation/views/signup_view.dart';
-import 'package:social_app/features/Auth/presentation/views/widgets/custom_button_widget.dart';
+
 import 'package:social_app/core/common_widgets/custom_logo_widget.dart';
 import 'package:social_app/features/Home/presentation/views/home_layout.dart';
 import '../../../../core/common_widgets/custom_loading_widget.dart';

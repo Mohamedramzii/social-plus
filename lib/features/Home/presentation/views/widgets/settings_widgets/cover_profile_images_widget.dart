@@ -1,11 +1,10 @@
 import 'dart:io';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
+
 
 import 'package:social_app/core/app_manager/colors/colors_manager.dart';
 import 'package:social_app/core/constants.dart';

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:social_app/core/app_manager/font/fonts_manager.dart';
-
 import '../../../../../../core/app_manager/colors/colors_manager.dart';
 
 class CustomTextFormFieldWidget2 extends StatelessWidget {

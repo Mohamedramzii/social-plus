@@ -10,8 +10,6 @@ import 'package:social_app/core/collection_endpoint.dart';
 import 'package:social_app/features/Auth/data/models/userModel.dart';
 import 'package:social_app/features/Auth/presentation/view_model/Cubits/auth/auth_cubit.dart';
 
-import '../../../../../../core/common_widgets/custom_toast_widget.dart';
-
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
