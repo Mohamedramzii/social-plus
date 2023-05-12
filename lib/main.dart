@@ -32,8 +32,6 @@ void main() async {
   runApp(MyApp(
     widget: widget,
   ));
-
-
 }
 
 class MyApp extends StatelessWidget {
@@ -50,7 +48,7 @@ class MyApp extends StatelessWidget {
           create: (context) => AuthCubit()..getUserData(),
         ),
         BlocProvider(
-          create: (context) => HomeCubit(),
+          create: (context) => HomeCubit()..getAllPosts(),
         )
       ],
       child: ScreenUtilInit(

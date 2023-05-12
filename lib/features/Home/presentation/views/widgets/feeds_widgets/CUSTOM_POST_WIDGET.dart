@@ -9,7 +9,21 @@ import 'custom_postReacts_widget.dart';
 import 'custom_postTages_widgte.dart';
 
 class CustomPostWidget extends StatelessWidget {
-  const CustomPostWidget({super.key});
+  const CustomPostWidget({
+    Key? key,
+    required this.userImage,
+    required this.firstname,
+    required this.lastname,
+    required this.date,
+    required this.postBodyText,
+    required this.postImage,
+  }) : super(key: key);
+  final String userImage;
+  final String firstname;
+  final String lastname;
+  final String date;
+  final String postBodyText;
+  final String postImage;
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +38,26 @@ class CustomPostWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Post Header
-                  const CustomHeaderWidget(),
+                  CustomHeaderWidget(
+                      userImage: userImage,
+                      firstname: firstname,
+                      lastname: lastname,
+                      date: date),
                   SizedBox(
                     height: 15.h,
                   ),
                   //Post body
-                  const CustomPostBodyWidget(),
+                   CustomPostBodyWidget(postBodyText:postBodyText),
+
                   // Post tags
                   const CustomPostTagsWidget(),
                   // Post Image
-                  const CustomPostImageWidget(),
+                   Padding(
+                    padding: const EdgeInsets.only(top: 12.0),
+                    child: CustomPostImageWidget(
+                      postImage:postImage
+                    ),
+                  ),
                   SizedBox(
                     height: 10.h,
                   ),

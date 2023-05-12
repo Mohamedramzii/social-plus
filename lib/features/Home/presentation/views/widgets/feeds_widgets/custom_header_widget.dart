@@ -5,16 +5,27 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../../../../core/app_manager/font/fonts_manager.dart';
 
 class CustomHeaderWidget extends StatelessWidget {
-  const CustomHeaderWidget({super.key});
-
+  const CustomHeaderWidget({
+    Key? key,
+    required this.userImage,
+    required this.firstname,
+    required this.lastname,
+    required this.date,
+  }) : super(key: key);
+  final String userImage;
+  final String firstname;
+  final String lastname;
+  final String date;
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const CircleAvatar(
-          radius: 25,
-          backgroundImage: NetworkImage(
-              'https://img.freepik.com/free-photo/smiling-doctor-with-strethoscope-isolated-grey_651396-974.jpg?size=626&ext=jpg'),
+        CircleAvatar(
+          radius: 27,
+          child: CircleAvatar(
+            radius: 25,
+            backgroundImage: NetworkImage(userImage),
+          ),
         ),
         SizedBox(
           width: 10.w,
@@ -26,7 +37,7 @@ class CustomHeaderWidget extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Muhammed Ramzy',
+                  '$firstname $lastname',
                   style: FontManager.textStyle14bk,
                 ),
                 SizedBox(
@@ -37,7 +48,7 @@ class CustomHeaderWidget extends StatelessWidget {
               ],
             ),
             Text(
-              'January 21,2021 at 11:00 pm',
+              date,
               style: FontManager.textStyle14gry,
             ),
           ],

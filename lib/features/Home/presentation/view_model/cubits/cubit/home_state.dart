@@ -103,5 +103,17 @@ class CreatePostFailureState extends HomeState {
   });
 }
 
+// set post image file to null
+class PostImageIsNullSuccess extends HomeState {}
 
-class PostImageIsNullSuccess extends HomeState{}
+// get Posts
+class GetPostsSuccessState extends HomeState {}
+
+class GetPostsLoadingState extends HomeState {}
+
+class GetPostsFailureState extends HomeState {
+  final String errMessage;
+  GetPostsFailureState({
+    required this.errMessage,
+  });
+}

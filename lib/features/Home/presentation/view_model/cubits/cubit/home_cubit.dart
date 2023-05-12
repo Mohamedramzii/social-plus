@@ -232,4 +232,18 @@ class HomeCubit extends Cubit<HomeState> {
       emit(CreatePostFailureState(errMessage: e.toString()));
     });
   }
+
+  List<PostModel> posts = [];
+  getAllPosts() {
+    emit(GetPostsLoadingState());
+
+    CollectionEndpoints.postCollection.get().then((value) {
+      value.docs.forEach((post) {
+        posts.add(PostModel.fromJson(post.data()));
+      });
+      emit(GetPostsSuccessState());
+    }).catchError((e) {
+      emit(GetPostsFailureState(errMessage: e.toString()));
+    });
+  }
 }

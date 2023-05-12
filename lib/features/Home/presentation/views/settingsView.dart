@@ -8,6 +8,7 @@ import 'package:social_app/core/common_widgets/custom_loading_widget.dart';
 import 'package:social_app/features/Auth/presentation/view_model/Cubits/auth/auth_cubit.dart';
 import 'package:social_app/features/Home/presentation/view_model/cubits/cubit/home_cubit.dart';
 import 'package:social_app/features/Home/presentation/views/editProfile_view.dart';
+import 'package:social_app/features/Home/presentation/views/home_layout.dart';
 import 'package:social_app/features/Home/presentation/views/widgets/settings_widgets/bio_widget.dart';
 import 'package:social_app/features/Home/presentation/views/widgets/settings_widgets/profile_image_widget.dart';
 import 'package:social_app/features/Home/presentation/views/widgets/settings_widgets/username_widget.dart';
@@ -23,9 +24,17 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Profile',
-              style: FontManager.textStyle20
-                  .copyWith(color: ColorsManager.primaryColor)),
+          title: Text(
+            'Profile',
+            style: FontManager.textStyle20
+                .copyWith(color: ColorsManager.primaryColor),
+          ),
+          leading: IconButton(
+              onPressed: () {
+                Navigation.navigateWithNoReturnFromLeftToRight(
+                    screen: HomeLayoutView(), context: context);
+              },
+              icon: const Icon(Icons.arrow_back)),
         ),
         body: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {},
@@ -209,7 +218,7 @@ class SettingsView extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
-                            isExit=true;
+                            isExit = true;
                             // isExitProfile=true;
                             print(isExit);
                             Navigation.navigateWithNoReturnFromLRightToLeft(

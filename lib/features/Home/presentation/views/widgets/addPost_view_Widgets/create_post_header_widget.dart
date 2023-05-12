@@ -5,16 +5,26 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../../../../core/app_manager/font/fonts_manager.dart';
 
 class CreatePostHeader extends StatelessWidget {
-  const CreatePostHeader({super.key});
-
+  const CreatePostHeader({
+    Key? key,
+    required this.firstname,
+    required this.lastname,
+    required this.userImage,
+  }) : super(key: key);
+  final String firstname;
+  final String lastname;
+  final String userImage;
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const CircleAvatar(
-          radius: 25,
-          backgroundImage: NetworkImage(
-              'https://img.freepik.com/free-photo/smiling-doctor-with-strethoscope-isolated-grey_651396-974.jpg?size=626&ext=jpg'),
+        CircleAvatar(
+          radius: 27,
+          
+          child: CircleAvatar(
+            radius: 25,
+            backgroundImage: NetworkImage(userImage),
+          ),
         ),
         SizedBox(
           width: 10.w,
@@ -26,7 +36,7 @@ class CreatePostHeader extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Muhammed Ramzy',
+                  '$firstname $lastname',
                   style: FontManager.textStyle14bk,
                 ),
                 SizedBox(

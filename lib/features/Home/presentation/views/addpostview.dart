@@ -8,7 +8,7 @@ import 'package:social_app/core/app_manager/font/fonts_manager.dart';
 import 'package:social_app/core/common_widgets/custom_toast_widget.dart';
 import 'package:social_app/features/Auth/presentation/view_model/Cubits/auth/auth_cubit.dart';
 import 'package:social_app/features/Home/presentation/view_model/cubits/cubit/home_cubit.dart';
-import 'package:social_app/features/Home/presentation/views/feedsView.dart';
+import 'package:social_app/features/Home/presentation/views/home_layout.dart';
 import 'package:social_app/features/Home/presentation/views/widgets/addPost_view_Widgets/create_post_body_widget.dart';
 import 'package:social_app/features/Home/presentation/views/widgets/addPost_view_Widgets/create_post_header_widget.dart';
 
@@ -25,7 +25,7 @@ class AddPostView extends StatelessWidget {
         if (state is CreatePostSuccessState) {
           CustomToastWidget.showSuccessToast(text: 'Posted Successfully');
           Navigation.navigateWithNoReturnFromLeftToRight(
-              screen: FeedsView(), context: context);
+              screen: HomeLayoutView(), context: context);
         }
       },
       builder: (context, state) {
@@ -52,7 +52,7 @@ class AddPostView extends StatelessWidget {
                     );
                   }
                 },
-                icon: state is CreatePostLoadingState == true
+                icon: state is CreatePostLoadingState
                     ? CircularProgressIndicator(
                         color: ColorsManager.primaryColor,
                       )
@@ -66,7 +66,11 @@ class AddPostView extends StatelessWidget {
           body: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(children: [
-              const CreatePostHeader(),
+              CreatePostHeader(
+                firstname: authCubit.userModel!.firstname!,
+                lastname: authCubit.userModel!.lastname!,
+                userImage: authCubit.userModel!.image!,
+              ),
               SizedBox(
                 height: 20.h,
               ),
@@ -80,7 +84,7 @@ class AddPostView extends StatelessWidget {
                   children: [
                     SizedBox(
                         width: double.infinity,
-                        height: 320.h,
+                        height: 350.h,
                         child: Image.file(
                           homeCubit.postImageFile!,
                           fit: BoxFit.cover,
@@ -88,8 +92,8 @@ class AddPostView extends StatelessWidget {
                     IconButton(
                         onPressed: () => homeCubit.RemovePostImage(),
                         icon: const Icon(
-                          FontAwesomeIcons.circleXmark,
-                          color: Colors.white,
+                          FontAwesomeIcons.solidCircleXmark,
+                          color: Colors.black,
                           size: 30,
                         ))
                   ],
