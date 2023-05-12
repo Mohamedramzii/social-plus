@@ -33,6 +33,7 @@ class CoverimagePickedErrorState extends HomeState {
 class UploadingProfileImageSuccessState extends HomeState {}
 
 class UploadingProfileImageLoadingState extends HomeState {}
+
 class UploadingProfileImageEndState extends HomeState {}
 
 class UploadingProfileImageErrorState extends HomeState {
@@ -54,7 +55,6 @@ class UploadingCoverImageErrorState extends HomeState {
   });
 }
 
-
 //update user Data
 class UpdateUserDataSuccessState extends HomeState {}
 
@@ -66,13 +66,42 @@ class UpdateUserDataErrorState extends HomeState {
     required this.errMessage,
   });
 }
-class UpdateAlldataSuccessState extends HomeState {}
 
-class UpdateAllDataLoadingState extends HomeState {}
+//Post Image Picker
+class PostImagePickedLoadingState extends HomeState {}
 
-class UpdateAllDataErrorState extends HomeState {
+class PostImagePickedSuccessState extends HomeState {}
+
+class PostImagePickedErrorState extends HomeState {
   final String errMessage;
-  UpdateAllDataErrorState({
+  PostImagePickedErrorState({
     required this.errMessage,
   });
 }
+
+// upload post image states
+class UploadPostImageLoadingState extends HomeState {}
+
+class UploadPostImageSuccessState extends HomeState {}
+
+class UploadPostImageErrorState extends HomeState {
+  final String errMessage;
+  UploadPostImageErrorState({
+    required this.errMessage,
+  });
+}
+
+// Create Post States
+class CreatePostLoadingState extends HomeState {}
+
+class CreatePostSuccessState extends HomeState {}
+
+class CreatePostFailureState extends HomeState {
+  final String errMessage;
+  CreatePostFailureState({
+    required this.errMessage,
+  });
+}
+
+
+class PostImageIsNullSuccess extends HomeState{}

@@ -4,6 +4,7 @@ import 'package:flutter_scrolling_fab_animated/flutter_scrolling_fab_animated.da
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:social_app/core/app_manager/colors/colors_manager.dart';
 import 'package:social_app/features/Home/presentation/views/addpostview.dart';
+import '../../../../core/constants.dart';
 import '../../../../core/navigation_manager.dart';
 import 'widgets/feeds_widgets/CUSTOM_POST_WIDGET.dart';
 
@@ -37,7 +38,7 @@ class FeedsView extends StatelessWidget {
           onPress: () {
             // CacheHelper.clearData(key: 'uID');
             Navigation.navigateWithReturnFromRightToLeft(
-                screen: const AddPostView(), context: context);
+                screen: AddPostView(), context: context);
           },
           scrollController: _scrollController,
           animateIcon: true,

@@ -9,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:social_app/core/collection_endpoint.dart';
 import 'package:social_app/features/Auth/data/models/userModel.dart';
 import 'package:social_app/features/Auth/presentation/view_model/Cubits/auth/auth_cubit.dart';
+import 'package:social_app/features/Home/data/models/post_model.dart';
 
 part 'home_state.dart';
 
@@ -36,10 +37,10 @@ class HomeCubit extends Cubit<HomeState> {
 
     if (pickedFile != null) {
       CoverImage = File(pickedFile.path);
-      emit(ProfileImagePickedSuccessState());
+      emit(CoverimagePickedSuccessState());
     } else {
       print('no image selected');
-      emit(ProfileImagePickedErrorState(errMessage: 'NO image selected'));
+      emit(CoverimagePickedErrorState(errMessage: 'NO image selected'));
     }
   }
 
@@ -126,14 +127,13 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   updateUserData(context,
-      {
-      required String? firstname,
+      {required String? firstname,
       required String? lastname,
       required String? bio,
       required String? email,
       required String? phone,
-       String? cover,
-       String? image}) {
+      String? cover,
+      String? image}) {
     emit(UpdateUserDataLoadingState());
     var user = BlocProvider.of<AuthCubit>(context).userModel!;
     var authCubit = BlocProvider.of<AuthCubit>(context);
@@ -159,113 +159,77 @@ class HomeCubit extends Cubit<HomeState> {
     });
   }
 
-//   updateAllData(
-//     context, {
-//     required String firstname,
-//     required String lastname,
-//     required String bio,
-//     required String email,
-//     required String phone,
-//   }) {
-//     emit(UpdateAllDataLoadingState());
-//     var user = BlocProvider.of<AuthCubit>(context).userModel!;
+  File? postImageFile;
+  Future<void> GetPostImage(ImageSource) async {
+    final pickedFile = await picker.pickImage(source: ImageSource);
+    if (pickedFile != null) {
+      postImageFile = File(pickedFile.path);
 
-//     if (profileImage != null && CoverImage == null) {
-//       firebase_storage.FirebaseStorage.instance
-//           .ref()
-//           .child(
-//               'usersProfileImages/${user.firstname} ${user.lastname}/${Uri.file(profileImage!.path).pathSegments.last}')
-//           //upload
-//           .putFile(profileImage!)
-//           .then((value) {
-//         value.ref.getDownloadURL().then((value) {
-//           profileImageURL = value;
-//           print('downloadLink: $value');
-//         }).catchError((e) {
-//           emit(UpdateAllDataErrorState(errMessage: e.toString()));
-//         });
-//       }).catchError((e) {
-//         emit(UpdateAllDataErrorState(errMessage: e.toString()));
-//       }).then((_) {
-//         updateUserData(context,
-//             firstname: firstname,
-//             lastname: lastname,
-//             bio: bio,
-//             email: email,
-//             phone: phone,
-//             cover: coverImageURL,
-//             image: profileImageURL);
-//         emit(UpdateAlldataSuccessState());
-//       });
-//     } else if (CoverImage != null && profileImage == null) {
-//       firebase_storage.FirebaseStorage.instance
-//           .ref()
-//           .child(
-//               'usersCoverImages/${user.firstname} ${user.lastname}/${Uri.file(CoverImage!.path).pathSegments.last}')
-//           .putFile(CoverImage!)
-//           .then((value) {
-//         value.ref.getDownloadURL().then((value) {
-//           coverImageURL = value;
-//         }).catchError((e) {
-//           emit(UpdateAllDataErrorState(errMessage: e.toString()));
-//         });
-//       }).catchError((e) {
-//         emit(UpdateAllDataErrorState(errMessage: e.toString()));
-//       }).then((_) {
-//         updateUserData(context,
-//             firstname: firstname,
-//             lastname: lastname,
-//             bio: bio,
-//             email: email,
-//             phone: phone,
-//             cover: coverImageURL,
-//             image: profileImageURL);
+      emit(PostImagePickedSuccessState());
+    } else {
+      print('no image selected');
+      emit(PostImagePickedErrorState(errMessage: 'NO image selected'));
+    }
+  }
 
-//         emit(UpdateAlldataSuccessState());
-//       });
-//     } else if (profileImage != null && CoverImage != null) {
-//       firebase_storage.FirebaseStorage.instance
-//           .ref()
-//           .child(
-//               'usersProfileImages/${user.firstname} ${user.lastname}/${Uri.file(profileImage!.path).pathSegments.last}')
-//           //upload
-//           .putFile(profileImage!)
-//           .then((value) {
-//         value.ref.getDownloadURL().then((value) {
-//           profileImageURL = value;
-//           print('downloadLink: $value');
-//         }).catchError((e) {
-//           emit(UpdateAllDataErrorState(errMessage: e.toString()));
-//         });
-//       }).catchError((e) {
-//         emit(UpdateAllDataErrorState(errMessage: e.toString()));
-//       }).then((_) {
-// // var user = BlocProvider.of<AuthCubit>(context).userModel!;
-//         firebase_storage.FirebaseStorage.instance
-//             .ref()
-//             .child(
-//                 'usersCoverImages/${user.firstname} ${user.lastname}/${Uri.file(CoverImage!.path).pathSegments.last}')
-//             .putFile(CoverImage!)
-//             .then((value) {
-//           value.ref.getDownloadURL().then((value) {
-//             coverImageURL = value;
-//           }).catchError((e) {
-//             emit(UpdateAllDataErrorState(errMessage: e.toString()));
-//           });
-//         }).catchError((e) {
-//           emit(UpdateAllDataErrorState(errMessage: e.toString()));
-//         });
-//       }).then((_) {
-//         updateUserData(context,
-//             firstname: firstname,
-//             lastname: lastname,
-//             bio: bio,
-//             email: email,
-//             phone: phone,
-//             cover: coverImageURL,
-//             image: profileImageURL);
-//         emit(UpdateAlldataSuccessState());
-//       });
-//     }
-//   }
+  String? postImageString;
+  UploadPostImage(
+    context, {
+    String? dateTime,
+    String? bodytext,
+  }) {
+    emit(UploadPostImageLoadingState());
+    var user = BlocProvider.of<AuthCubit>(context).userModel!;
+    // var authCubit = BlocProvider.of<AuthCubit>(context);
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child(
+            'Posts/${user.uID}-${user.firstname} /${Uri.file(postImageFile!.path).pathSegments.last}')
+        //upload
+        .putFile(postImageFile!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        postImageString = value;
+        CreateNewPost(context,
+            postImage: value, bodytext: bodytext, dateTime: dateTime);
+        print('downloadLink: $value');
+        RemovePostImage();
+        emit(UploadPostImageSuccessState());
+      }).catchError((e) {
+        emit(UploadPostImageErrorState(errMessage: e.toString()));
+      });
+    }).catchError((e) {
+      emit(UploadPostImageErrorState(errMessage: e.toString()));
+    });
+  }
+
+  RemovePostImage() {
+    postImageFile = null;
+    emit(PostImageIsNullSuccess());
+  }
+
+  CreateNewPost(
+    context, {
+    String? dateTime,
+    String? bodytext,
+    String? postImage,
+  }) {
+    var user = BlocProvider.of<AuthCubit>(context).userModel;
+
+    PostModel model = PostModel(
+        uID: user!.uID,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        image: user.image,
+        dateTime: dateTime,
+        postImage: postImage ?? '',
+        bodytext: bodytext);
+    emit(CreatePostLoadingState());
+
+    CollectionEndpoints.postCollection.doc().set(model.toJson()).then((value) {
+      emit(CreatePostSuccessState());
+    }).catchError((e) {
+      emit(CreatePostFailureState(errMessage: e.toString()));
+    });
+  }
 }
