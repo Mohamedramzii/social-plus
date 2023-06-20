@@ -1,7 +1,7 @@
 # Social plus
 
 
-## A social app to make your connections.
+## A social app to build your network.
 ### It contains many features such as news feed, chatting and notifications.
 
 In this app, i used:
